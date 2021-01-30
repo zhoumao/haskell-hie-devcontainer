@@ -17,7 +17,8 @@ ARG COMMON_SCRIPT_SHA="dev-mode"
 
 # Configure apt and install packages
 RUN apk update \
-    && apk add --no-cache wget coreutils ca-certificates \
+    && apk add --no-cache wget coreutils ca-certificates cabal \
+    && nix-env -iA nixpkgs.stack \
     && wget -q -O /tmp/common-setup.sh $COMMON_SCRIPT_SOURCE \
     && if [ "$COMMON_SCRIPT_SHA" != "dev-mode" ]; then echo "$COMMON_SCRIPT_SHA /tmp/common-setup.sh" | sha256sum -c - ; fi \
     && /bin/ash /tmp/common-setup.sh "$INSTALL_ZSH" "$USERNAME" "$USER_UID" "$USER_GID" \
